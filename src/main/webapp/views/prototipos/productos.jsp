@@ -47,7 +47,7 @@
                             </thead>
                             <tbody class="align-middle">
                             <tr ng-repeat="pastel in pasteles">
-                                <th scope="row">{{$index + 1}}</th>
+                                <th scope="row">{{$index+1}}</th>
                                 <td>{{pastel.codigo}}</td>
                                 <td>{{pastel.nombre}}</td>
                                 <td>{{pastel.sabor}}</td>
@@ -55,7 +55,7 @@
                                 <td>{{pastel.cantidad}}</td>
                                 <td>
                                     <button class="btn btn-primary"><i data-feather="edit"></i></button>
-                                    <button class="btn btn-danger"><i data-feather="trash-2"></i></button>
+                                    <button class="btn btn-danger" ng-click="mostrarEliminacion($index+1)"><i data-feather="trash-2"></i></button>
                                 </td>
                             </tr>
                             </tbody>
@@ -122,13 +122,24 @@
     ]
 
     app.controller('pasteleriaController', ($scope) => {
+        const modalRegistro = new bootstrap.Modal(document.getElementById('modalRegistro'), {})
+        const modalModificacion = new bootstrap.Modal(document.getElementById('modalModificacion'), {})
+        const modalEliminacion = new bootstrap.Modal(document.getElementById('modalEliminacion'), {})
         $scope.pasteles = pasteles
 
-        $scope.infoRegistro = {}
-        $scope.infoModificacion = {}
-        $scope.infoEliminacion = {}
+        $scope.mostrarRegistro = (index) => {
+            $scope.infoRegistro = $scope.pasteles[index]
+        }
 
-        
+        $scope.mostrarModificacion = (index) => {
+            $scope.infoModificacion = $scope.pasteles[index]
+        }
+
+        $scope.mostrarEliminacion = (index) => {
+            console.log($scope.pasteles[index])
+            $scope.infoEliminacion = $scope.pasteles[index]
+            modalEliminacion.show()
+        }
     })
 
 </script>

@@ -16,6 +16,3 @@
         </div>
     </div>
 </div>
-<script>
-    const modalModificacion = new bootstrap.Modal(document.getElementById('modalModificacion'), {})
-</script>
