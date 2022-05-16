@@ -8,13 +8,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Struts 2 y Angular JS</title>
-    <link href="<%=context%>/assets/css/bootstrap.css" rel="stylesheet">
+    <link href="<%=context%>/assets/css/pasteleria.css" rel="stylesheet">
     <script src="<%=context%>/assets/js/angular.js"></script>
     <script src="<%=context%>/assets/js/feather.js"></script>
 </head>
-<body ng-controller="pasteleriaController">
+<body class="bg-seashell">
 
-<div>
+<div ng-controller="pasteleriaController">
     <s:include value="/components/navbar.jsp">
         <s:param name="actualPage">prototipos</s:param>
     </s:include>
@@ -22,11 +22,11 @@
     <div class="container mt-5">
         <div class="row">
             <div class="col">
-                <div class="card">
-                    <div class="card-header bg-dark text-white">
+                <div class="card shadow">
+                    <div class="card-header bg-blush text-white">
                         <div class="row">
                             <div class="col-auto"><h5 class="m-0" style="padding-block: 0.5rem">Pasteles</h5></div>
-                            <div class="col-auto ms-auto"><button class="btn btn-success"><i data-feather="plus"></i></button></div>
+                            <div class="col-auto ms-auto"><button ng-click="mostrarRegistro()" class="btn border-2 btn-outline-light"><i data-feather="plus"></i></button></div>
                         </div>
                     </div>
                     <div>
@@ -34,7 +34,7 @@
                     <div class="card-body">
 
                         <div class="table-responsive">
-                            <table class="table table-striped">
+                            <table class="table table-seashell text-center">
                                 <thead>
                                 <tr>
                                     <th>#</th>
@@ -49,14 +49,14 @@
                                 <tbody class="align-middle">
                                 <tr ng-repeat="pastel in pasteles">
                                     <th scope="row">{{$index+1}}</th>
-                                    <td>{{pastel.codigo}}</td>
-                                    <td>{{pastel.nombre}}</td>
-                                    <td>{{pastel.sabor}}</td>
-                                    <td>{{pastel.precio | currency}}</td>
-                                    <td>{{pastel.cantidad}}</td>
+                                    <td>{{pastel.code}}</td>
+                                    <td class="text-start">{{pastel.name}}</td>
+                                    <td>{{pastel.flavor.name}}</td>
+                                    <td>{{pastel.price | currency}}</td>
+                                    <td>{{pastel.amount}}</td>
                                     <td>
-                                        <button class="btn btn-primary"><i data-feather="edit"></i></button>
-                                        <button class="btn btn-danger" ng-click="mostrarEliminacion($index)"><i data-feather="trash-2"></i></button>
+                                        <button class="btn btn-pale"  ng-click="mostrarModificacion($index)"><i data-feather="edit"></i></button>
+                                        <button class="btn btn-mauvelous" ng-click="mostrarEliminacion($index)"><i data-feather="trash-2"></i></button>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -78,48 +78,92 @@
 <script>
     const app = angular.module('pasteleria', [])
 
-    const pasteles = [
+    const flavors = [
         {
-            codigo: 'P-374',
-            nombre: 'Pastel Chocoamaretto',
-            sabor: 'Vainilla',
-            precio: 236,
-            cantidad: 7
+            code: 'S-01',
+            name: 'Chocolate'
         },
         {
-            codigo: 'P-294',
-            nombre: 'Pastel Rous',
-            sabor: 'Zarzamora',
-            precio: 253,
-            cantidad: 2
+            code: 'S-02',
+            name: 'Vainilla'
         },
         {
-            codigo: 'P-984',
-            nombre: 'Pastel Xoccolat',
-            sabor: 'Chocolate',
-            precio: 354,
-            cantidad: 2
+            code: 'S-03',
+            name: 'Zarzamora'
         },
         {
-            codigo: 'P-123',
-            nombre: 'Pastel de Chocolate con Chocolate',
-            sabor: 'Chocolate',
-            precio: 458,
-            cantidad: 4
+            code: 'S-04',
+            name: 'Fresa'
         },
         {
-            codigo: 'P-234',
-            nombre: 'Pastel de Fresa',
-            sabor: 'Fresa',
-            precio: 2,
-            cantidad: 450
+            code: 'S-05',
+            name: 'Cajeta'
         },
         {
-            codigo: 'P-568',
-            nombre: 'Pastel de Queso con Chocolate',
-            sabor: 'Chocolate',
-            precio: 500,
-            cantidad: 7
+            code: 'S-06',
+            name: 'Nuez'
+        },
+    ]
+    const cakes = [
+        {
+            code: 'P-374',
+            name: 'Pastel Chocoamaretto',
+            flavor: {
+                code: 'S-02',
+                name: 'Vainilla'
+            },
+            price: 236,
+            amount: 7
+        },
+        {
+            code: 'P-294',
+            name: 'Pastel Rous',
+            flavor: {
+                code: 'S-03',
+                name: 'Zarzamora'
+            },
+            price: 253,
+            amount: 2
+        },
+        {
+            code: 'P-984',
+            name: 'Pastel Xoccolat',
+            flavor: {
+                code: 'S-01',
+                name: 'Chocolate'
+            },
+            price: 354,
+            amount: 2
+        },
+        {
+            code: 'P-123',
+            name: 'Pastel de Chocolate con Chocolate',
+            flavor: {
+                code: 'S-01',
+                name: 'Chocolate'
+            },
+            price: 458,
+            amount: 4
+        },
+        {
+            code: 'P-234',
+            name: 'Pastel de Fresa',
+            flavor: {
+                code: 'S-04',
+                name: 'Fresa'
+            },
+            price: 2,
+            amount: 450
+        },
+        {
+            code: 'P-568',
+            name: 'Pastel de Queso con Chocolate',
+            flavor: {
+                code: 'S-01',
+                name: 'Chocolate'
+            },
+            price: 500,
+            amount: 7
         },
     ]
 
@@ -127,19 +171,82 @@
         const modalRegistro = new bootstrap.Modal(document.getElementById('modalRegistro'), {})
         const modalModificacion = new bootstrap.Modal(document.getElementById('modalModificacion'), {})
         const modalEliminacion = new bootstrap.Modal(document.getElementById('modalEliminacion'), {})
-        $scope.pasteles = pasteles
+        $scope.pasteles = cakes
+        $scope.sabores = [
+            {
+                name: 'Selecciona una opción...',
+                code: ''
+            },
+            ...flavors
+        ]
 
         $scope.mostrarRegistro = (index) => {
-            $scope.infoRegistro = $scope.pasteles[index]
+            $scope.errors = {}
+            $scope.infoRegistro = {flavor: $scope.sabores[0]}
+            modalRegistro.show()
         }
 
         $scope.mostrarModificacion = (index) => {
-            $scope.infoModificacion = $scope.pasteles[index]
+            $scope.errors = {}
+            $scope.infoModificacion = {...$scope.pasteles[index], index: index}
+            modalModificacion.show()
         }
 
         $scope.mostrarEliminacion = (index) => {
             $scope.infoEliminacion = {...$scope.pasteles[index], index: index}
             modalEliminacion.show()
+        }
+
+        $scope.registrar = () => {
+            let errorCount = 0
+
+            let error = !$scope.infoRegistro.code ? 'Campo obligatorio.' : null
+            $scope.errors.code = error
+            if (error) errorCount++
+
+            error = !$scope.infoRegistro.name ? 'Campo obligatorio.' : null
+            $scope.errors.name = error
+            if (error) errorCount++
+
+            error = !$scope.infoRegistro.flavor.code ? 'Campo obligatorio.' : null
+            $scope.errors.flavor = error
+            if (error) errorCount++
+
+            error = !$scope.infoRegistro.price ? 'Campo obligatorio.' : null
+            $scope.errors.price = error
+            if (error) errorCount++
+
+            error = !$scope.infoRegistro.amount ? 'Campo obligatorio.' : null
+            $scope.errors.amount = error
+            if (error) errorCount++
+
+            if (errorCount == 0) {
+                $scope.pasteles.push({
+                    code: $scope.infoRegistro.code,
+                    name: $scope.infoRegistro.name,
+                    flavor: {
+                        code: $scope.infoRegistro.flavor.code,
+                        name: $scope.infoRegistro.flavor.name
+                    },
+                    price: $scope.infoRegistro.price,
+                    amount: $scope.infoRegistro.amount
+                })
+                modalRegistro.hide()
+            }
+        }
+
+        $scope.modificar = (index) => {
+            $scope.pasteles[index] = {
+                ...$scope.pasteles[index],
+                name: $scope.infoModificacion.name,
+                flavor: {
+                    code: $scope.infoModificacion.flavor.code,
+                    name: $scope.infoModificacion.flavor.name
+                },
+                price: $scope.infoModificacion.price,
+                amount: $scope.infoModificacion.amount
+            }
+            modalModificacion.hide()
         }
 
         $scope.eliminar = (index) => {
