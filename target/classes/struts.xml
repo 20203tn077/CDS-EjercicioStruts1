@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+
+<struts>
+
+    <constant name="struts.action.extension" value=","/>
+    <constant name="struts.devMode" value="true" />
+
+    <package name="main" extends="struts-default">
+        <action name="">
+            <result>/index.jsp</result>
+        </action>
+        <action name="inicio">
+            <result>/index.jsp</result>
+        </action>
+        <action name="calculadora">
+            <result>/views/calculadora.jsp</result>
+        </action>
+        <action name="cubos">
+            <result>/views/cubos.jsp</result>
+        </action>
+        <action name="prototipos">
+            <result>/views/prototipos.jsp</result>
+        </action>
+    </package>
+
+<!--    Vistas prototipos-->
+    <package name="prototipos" extends="struts-default" namespace="/prototipos">
+        <action name="categorias">
+            <result>/views/prototipos/categorias.jsp</result>
+        </action>
+        <action name="productos">
+            <result>/views/prototipos/productos.jsp</result>
+        </action>
+    </package>
+
+</struts>

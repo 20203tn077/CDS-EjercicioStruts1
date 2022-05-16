@@ -14,62 +14,64 @@
 </head>
 <body ng-controller="pasteleriaController">
 
-<s:include value="/components/navbar.jsp">
-    <s:param name="actualPage">prototipos</s:param>
-</s:include>
+<div>
+    <s:include value="/components/navbar.jsp">
+        <s:param name="actualPage">prototipos</s:param>
+    </s:include>
 
-<div class="container mt-5">
-    <div class="row">
-        <div class="col">
-            <div class="card">
-                <div class="card-header bg-dark text-white">
-                    <div class="row">
-                        <div class="col-auto"><h5 class="m-0" style="padding-block: 0.5rem">Pasteles</h5></div>
-                        <div class="col-auto ms-auto"><button class="btn btn-success"><i data-feather="plus"></i></button></div>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header bg-dark text-white">
+                        <div class="row">
+                            <div class="col-auto"><h5 class="m-0" style="padding-block: 0.5rem">Pasteles</h5></div>
+                            <div class="col-auto ms-auto"><button class="btn btn-success"><i data-feather="plus"></i></button></div>
+                        </div>
                     </div>
-                </div>
-                <div>
-                </div>
-                <div class="card-body">
+                    <div>
+                    </div>
+                    <div class="card-body">
 
-                    <div class="table-responsive">
-                        <table class="table table-striped" ng-controller="pasteleriaController">
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Código</th>
-                                <th>Nombre</th>
-                                <th>Sabor</th>
-                                <th>Precio</th>
-                                <th>Cantidad</th>
-                                <th>Acciones</th>
-                            </tr>
-                            </thead>
-                            <tbody class="align-middle">
-                            <tr ng-repeat="pastel in pasteles">
-                                <th scope="row">{{$index+1}}</th>
-                                <td>{{pastel.codigo}}</td>
-                                <td>{{pastel.nombre}}</td>
-                                <td>{{pastel.sabor}}</td>
-                                <td>{{pastel.precio | currency}}</td>
-                                <td>{{pastel.cantidad}}</td>
-                                <td>
-                                    <button class="btn btn-primary"><i data-feather="edit"></i></button>
-                                    <button class="btn btn-danger" ng-click="mostrarEliminacion($index+1)"><i data-feather="trash-2"></i></button>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Código</th>
+                                    <th>Nombre</th>
+                                    <th>Sabor</th>
+                                    <th>Precio</th>
+                                    <th>Cantidad</th>
+                                    <th>Acciones</th>
+                                </tr>
+                                </thead>
+                                <tbody class="align-middle">
+                                <tr ng-repeat="pastel in pasteles">
+                                    <th scope="row">{{$index+1}}</th>
+                                    <td>{{pastel.codigo}}</td>
+                                    <td>{{pastel.nombre}}</td>
+                                    <td>{{pastel.sabor}}</td>
+                                    <td>{{pastel.precio | currency}}</td>
+                                    <td>{{pastel.cantidad}}</td>
+                                    <td>
+                                        <button class="btn btn-primary"><i data-feather="edit"></i></button>
+                                        <button class="btn btn-danger" ng-click="mostrarEliminacion($index)"><i data-feather="trash-2"></i></button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<s:include value="/components/prototipos/productos/modalRegistro.jsp"></s:include>
-<s:include value="/components/prototipos/productos/modalModificacion.jsp"></s:include>
-<s:include value="/components/prototipos/productos/modalEliminacion.jsp"></s:include>
+    <s:include value="/components/prototipos/productos/modalRegistro.jsp"></s:include>
+    <s:include value="/components/prototipos/productos/modalModificacion.jsp"></s:include>
+    <s:include value="/components/prototipos/productos/modalEliminacion.jsp"></s:include>
+</div>
 
 <script src="<%=context%>/assets/js/bootstrap.js"></script>
 <script>feather.replace()</script>
@@ -136,9 +138,14 @@
         }
 
         $scope.mostrarEliminacion = (index) => {
-            console.log($scope.pasteles[index])
-            $scope.infoEliminacion = $scope.pasteles[index]
+            $scope.infoEliminacion = {...$scope.pasteles[index], index: index}
             modalEliminacion.show()
+        }
+
+        $scope.eliminar = (index) => {
+            const pastelesNuevo = $scope.pasteles.filter((pastel, i) => i != index)
+            $scope.pasteles = pastelesNuevo
+            modalEliminacion.hide()
         }
     })
 
