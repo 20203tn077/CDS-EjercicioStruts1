@@ -236,17 +236,37 @@
         }
 
         $scope.modificar = (index) => {
-            $scope.pasteles[index] = {
-                ...$scope.pasteles[index],
-                name: $scope.infoModificacion.name,
-                flavor: {
-                    code: $scope.infoModificacion.flavor.code,
-                    name: $scope.infoModificacion.flavor.name
-                },
-                price: $scope.infoModificacion.price,
-                amount: $scope.infoModificacion.amount
+            let errorCount = 0
+
+            error = !$scope.infoModificacion.name ? 'Campo obligatorio.' : null
+            $scope.errors.name = error
+            if (error) errorCount++
+
+            error = !$scope.infoModificacion.flavor.code ? 'Campo obligatorio.' : null
+            $scope.errors.flavor = error
+            if (error) errorCount++
+
+            error = !$scope.infoModificacion.price ? 'Campo obligatorio.' : null
+            $scope.errors.price = error
+            if (error) errorCount++
+
+            error = !$scope.infoModificacion.amount ? 'Campo obligatorio.' : null
+            $scope.errors.amount = error
+            if (error) errorCount++
+
+            if (errorCount == 0) {
+                $scope.pasteles[index] = {
+                    ...$scope.pasteles[index],
+                    name: $scope.infoModificacion.name,
+                    flavor: {
+                        code: $scope.infoModificacion.flavor.code,
+                        name: $scope.infoModificacion.flavor.name
+                    },
+                    price: $scope.infoModificacion.price,
+                    amount: $scope.infoModificacion.amount
+                }
+                modalModificacion.hide()
             }
-            modalModificacion.hide()
         }
 
         $scope.eliminar = (index) => {

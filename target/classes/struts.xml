@@ -18,7 +18,7 @@
         <action name="calculadora">
             <result>/views/calculadora.jsp</result>
         </action>
-        <action name="cubos">
+        <action name="cubos" class="mx.edu.utez.proyectostruts2.action.cubos.CubesAction" method="executeCubeList">
             <result>/views/cubos.jsp</result>
         </action>
         <action name="prototipos">
@@ -26,13 +26,27 @@
         </action>
     </package>
 
-<!--    Vistas prototipos-->
+    <!--Vistas prototipos-->
     <package name="prototipos" extends="struts-default" namespace="/prototipos">
         <action name="categorias">
             <result>/views/prototipos/categorias.jsp</result>
         </action>
         <action name="productos">
             <result>/views/prototipos/productos.jsp</result>
+        </action>
+    </package>
+
+    <!--API de cubos-->
+    <package name="cubos" extends="json-default" namespace="/cubeapi">
+        <action name="getCube" class="mx.edu.utez.proyectostruts2.action.cubos.CubesAction" method="getCube">
+            <interceptor-ref name="json">
+                <param name="jsonContentType">text/json</param>
+                <param name="jsonRpcContentType">text/json-rpc</param>
+            </interceptor-ref>
+            <result type="json"/>
+        </action>
+        <action name="productos">
+            <result type="json"/>
         </action>
     </package>
 

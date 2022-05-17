@@ -21,7 +21,7 @@
 <div class="container mt-5">
     <div class="row">
         <div class="col">
-            <div class="card">
+            <div class="card shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title">Inicio</h5>
                     <p class="card-text">Esta es una página de prueba en la que se muestra el funcionamiento de una
