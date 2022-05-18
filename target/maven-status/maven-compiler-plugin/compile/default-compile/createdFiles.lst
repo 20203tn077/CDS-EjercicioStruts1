@@ -1,6 +1,1 @@
-mx\edu\utez\proyectostruts2\utils\Message.class
-mx\edu\utez\proyectostruts2\action\cubos\CubesAction.class
-mx\edu\utez\proyectostruts2\HelloServlet.class
-mx\edu\utez\proyectostruts2\model\cubos\Cube.class
-mx\edu\utez\proyectostruts2\model\cubos\CubeDAO.class
-mx\edu\utez\proyectostruts2\service\MySQLConnection.class
+mx/edu/utez/proyectostruts2/action/cubos/CubeApiAction.class

@@ -14,6 +14,12 @@ public class Message {
         this.errors = errors;
     }
 
+    public Message(boolean error, String status, Map<String, String> errors) {
+        this.error = error;
+        this.status = status;
+        this.errors = errors;
+    }
+
     public Message(boolean error, String status, Object data) {
         this.error = error;
         this.status = status;

@@ -38,12 +38,13 @@
 
     <!--API de cubos-->
     <package name="cubos" extends="json-default" namespace="/cubeapi">
-        <action name="getCube" class="mx.edu.utez.proyectostruts2.action.cubos.CubesAction" method="getCube">
+        <action name="getCube" class="mx.edu.utez.proyectostruts2.action.cubos.CubeApiAction" method="executeCube">
             <interceptor-ref name="json">
-                <param name="jsonContentType">text/json</param>
-                <param name="jsonRpcContentType">text/json-rpc</param>
+                <param name="jsonContentType">application/json</param>
             </interceptor-ref>
-            <result type="json"/>
+            <result type="json">
+                <param name="root">message</param>
+            </result>
         </action>
         <action name="productos">
             <result type="json"/>

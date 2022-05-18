@@ -9,8 +9,6 @@ import mx.edu.utez.proyectostruts2.model.cubos.CubeDAO;
 import java.util.List;
 
 public class CubesAction extends ActionSupport {
-    private String sku;
-    private Cube cube;
     private String cubes;
 
     public String executeCubeList() {
@@ -22,20 +20,7 @@ public class CubesAction extends ActionSupport {
         return SUCCESS;
     }
 
-    public Cube getCube() {
-        cube = new CubeDAO().getCube("CB-01");
-        return cube;
-    }
-
     public String getCubes() {
         return cubes;
-    }
-
-    public void setCube(Cube cube) {
-        this.cube = cube;
-    }
-
-    public void setSku(String sku) {
-        this.sku = sku;
     }
 }
