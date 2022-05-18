@@ -19,7 +19,7 @@
         <s:param name="actualPage">prototipos</s:param>
     </s:include>
 
-    <div class="container mt-5">
+    <div class="container my-4 my-md-5">
         <div class="row">
             <div class="col">
                 <div class="card shadow">
@@ -55,8 +55,14 @@
                                     <td>{{pastel.price | currency}}</td>
                                     <td>{{pastel.amount}}</td>
                                     <td>
-                                        <button class="btn btn-pale"  ng-click="mostrarModificacion($index)"><i data-feather="edit"></i></button>
-                                        <button class="btn btn-mauvelous" ng-click="mostrarEliminacion($index)"><i data-feather="trash-2"></i></button>
+                                        <div class="row g-2">
+                                            <div class="col-auto">
+                                                <button class="btn btn-pale"  ng-click="mostrarModificacion($index)"><i data-feather="edit"></i></button>
+                                            </div>
+                                            <div class="col-auto">
+                                                <button class="btn btn-mauvelous" ng-click="mostrarEliminacion($index)"><i data-feather="trash-2"></i></button>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -71,11 +77,18 @@
     <s:include value="/components/prototipos/productos/modalRegistro.jsp"></s:include>
     <s:include value="/components/prototipos/productos/modalModificacion.jsp"></s:include>
     <s:include value="/components/prototipos/productos/modalEliminacion.jsp"></s:include>
+    <s:include value="/components/loader.jsp"></s:include>
+    <s:include value="/components/alert.jsp"></s:include>
 </div>
 
 <script src="<%=context%>/assets/js/bootstrap.js"></script>
 <script>feather.replace()</script>
 <script>
+    const modalRegistro = new bootstrap.Modal(document.getElementById('modalRegistro'), {})
+    const modalModificacion = new bootstrap.Modal(document.getElementById('modalModificacion'), {})
+    const modalEliminacion = new bootstrap.Modal(document.getElementById('modalEliminacion'), {})
+    const loader = new bootstrap.Modal('#loader', {backdrop: 'static', keyboard: false})
+    const myAlert = new bootstrap.Toast('#alert', {delay: 3500})
     const app = angular.module('pasteleria', [])
 
     const flavors = [
@@ -167,10 +180,8 @@
         },
     ]
 
-    app.controller('pasteleriaController', ($scope) => {
-        const modalRegistro = new bootstrap.Modal(document.getElementById('modalRegistro'), {})
-        const modalModificacion = new bootstrap.Modal(document.getElementById('modalModificacion'), {})
-        const modalEliminacion = new bootstrap.Modal(document.getElementById('modalEliminacion'), {})
+    app.controller('pasteleriaController', ($scope, $sce, $timeout) => {
+        $scope.loaderVariant = 'blush'
         $scope.pasteles = cakes
         $scope.sabores = [
             {
@@ -232,6 +243,16 @@
                     amount: $scope.infoRegistro.amount
                 })
                 modalRegistro.hide()
+                loader.show()
+                setTimeout(() => {
+                    loader.hide()
+                    $scope.alertType = 'orchid'
+                    $scope.alertMessage = 'Pastel registrado :)'
+                    $scope.alertIcon = $sce.trustAsHtml(feather.icons['check-circle'].toSvg() + '&nbsp;')
+                    $timeout(() => {
+                        myAlert.show()
+                    })
+                }, 1500)
             }
         }
 
@@ -266,6 +287,16 @@
                     amount: $scope.infoModificacion.amount
                 }
                 modalModificacion.hide()
+                loader.show()
+                setTimeout(() => {
+                    loader.hide()
+                    $scope.alertType = 'orchid'
+                    $scope.alertMessage = 'Pastel modificado :)'
+                    $scope.alertIcon = $sce.trustAsHtml(feather.icons['check-circle'].toSvg() + '&nbsp;')
+                    $timeout(() => {
+                        myAlert.show()
+                    })
+                }, 1500)
             }
         }
 
@@ -273,6 +304,17 @@
             const pastelesNuevo = $scope.pasteles.filter((pastel, i) => i != index)
             $scope.pasteles = pastelesNuevo
             modalEliminacion.hide()
+            loader.show()
+            setTimeout(() => {
+                loader.hide()
+                $scope.alertType = 'orchid'
+                $scope.alertMessage = 'Pastel eliminado :)'
+                $scope.alertIcon = $sce.trustAsHtml(feather.icons['check-circle'].toSvg() + '&nbsp;')
+                $timeout(() => {
+                    myAlert.show()
+                })
+            }, 1500)
+
         }
     })
 

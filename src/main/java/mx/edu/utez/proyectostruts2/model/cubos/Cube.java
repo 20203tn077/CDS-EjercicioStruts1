@@ -6,20 +6,23 @@ public class Cube {
     private String name;
     private String description;
     private String image;
+    private String image2;
 
-    public Cube(int id, String sku, String name, String description, String image) {
+    public Cube(int id, String sku, String name, String description, String image, String image2) {
         this.id = id;
         this.sku = sku;
         this.name = name;
         this.description = description;
         this.image = image;
+        this.image2 = image2;
     }
 
-    public Cube(String sku, String name, String description, String image) {
+    public Cube(String sku, String name, String description, String image, String image2) {
         this.sku = sku;
         this.name = name;
         this.description = description;
         this.image = image;
+        this.image2 = image2;
     }
 
     public int getId() {
@@ -60,5 +63,13 @@ public class Cube {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getImage2() {
+        return image2;
+    }
+
+    public void setImage2(String image2) {
+        this.image2 = image2;
     }
 }

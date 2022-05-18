@@ -19,7 +19,7 @@
         <s:param name="actualPage">prototipos</s:param>
     </s:include>
 
-    <div class="container mt-5">
+    <div class="container my-4 my-md-5">
         <div class="row">
             <div class="col">
                 <div class="card shadow">
@@ -65,11 +65,18 @@
     <s:include value="/components/prototipos/categorias/modalRegistro.jsp"></s:include>
     <s:include value="/components/prototipos/categorias/modalModificacion.jsp"></s:include>
     <s:include value="/components/prototipos/categorias/modalEliminacion.jsp"></s:include>
+    <s:include value="/components/loader.jsp"></s:include>
+    <s:include value="/components/alert.jsp"></s:include>
 </div>
 
 <script src="<%=context%>/assets/js/bootstrap.js"></script>
 <script>feather.replace()</script>
 <script>
+    const modalRegistro = new bootstrap.Modal(document.getElementById('modalRegistro'), {})
+    const modalModificacion = new bootstrap.Modal(document.getElementById('modalModificacion'), {})
+    const modalEliminacion = new bootstrap.Modal(document.getElementById('modalEliminacion'), {})
+    const loader = new bootstrap.Modal('#loader', {backdrop: 'static', keyboard: false})
+    const myAlert = new bootstrap.Toast('#alert', {delay: 3500})
     const app = angular.module('pasteleria', [])
 
     const flavors = [
@@ -99,10 +106,8 @@
         },
     ]
 
-    app.controller('pasteleriaController', ($scope) => {
-        const modalRegistro = new bootstrap.Modal(document.getElementById('modalRegistro'), {})
-        const modalModificacion = new bootstrap.Modal(document.getElementById('modalModificacion'), {})
-        const modalEliminacion = new bootstrap.Modal(document.getElementById('modalEliminacion'), {})
+    app.controller('pasteleriaController', ($scope, $sce) => {
+        $scope.loaderVariant = 'blush'
         $scope.sabores = flavors
 
         $scope.mostrarRegistro = (index) => {
@@ -140,6 +145,10 @@
                     name: $scope.infoRegistro.name
                 })
                 modalRegistro.hide()
+                loader.show()
+                setTimeout(() => {
+                    loader.hide()
+                }, 1500)
             }
         }
 
@@ -156,6 +165,10 @@
                     name: $scope.infoModificacion.name
                 }
                 modalModificacion.hide()
+                loader.show()
+                setTimeout(() => {
+                    loader.hide()
+                }, 1500)
             }
         }
 
@@ -163,6 +176,10 @@
             const saboresNuevo = $scope.sabores.filter((sabor, i) => i != index)
             $scope.sabores = saboresNuevo
             modalEliminacion.hide()
+            loader.show()
+            setTimeout(() => {
+                loader.hide()
+            }, 1500)
         }
     })
 

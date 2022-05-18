@@ -21,14 +21,15 @@ public class CubeDAO {
         List<Cube> cubes = new ArrayList<>();
         try {
             con = MySQLConnection.getConnection();
-            pstm = con.prepareStatement("SELECT `sku`, `name`, `description`, `image` FROM `cube`");
+            pstm = con.prepareStatement("SELECT `sku`, `name`, `description`, `image`, `image2` FROM `cube`");
             rs = pstm.executeQuery();
             while (rs.next()) {
                 cubes.add(new Cube(
                         rs.getString("sku"),
                         rs.getString("name"),
                         rs.getString("description"),
-                        rs.getString("image")
+                        rs.getString("image"),
+                        rs.getString("image2")
                 ));
             }
         } catch (SQLException e) {
@@ -44,7 +45,7 @@ public class CubeDAO {
         Cube cube = null;
         try {
             con = MySQLConnection.getConnection();
-            pstm = con.prepareStatement("SELECT `sku`, `name`, `description`, `image` FROM `cube` WHERE `sku` = ?");
+            pstm = con.prepareStatement("SELECT `sku`, `name`, `description`, `image`, `image2` FROM `cube` WHERE `sku` = ?");
             pstm.setString(1, sku);
             rs = pstm.executeQuery();
             if (rs.next()) {
@@ -52,7 +53,8 @@ public class CubeDAO {
                         rs.getString("sku"),
                         rs.getString("name"),
                         rs.getString("description"),
-                        rs.getString("image")
+                        rs.getString("image"),
+                        rs.getString("image2")
                 );
             }
         } catch (SQLException e) {
@@ -67,11 +69,12 @@ public class CubeDAO {
     public void postCube(Cube cube) {
         try {
             con = MySQLConnection.getConnection();
-            pstm = con.prepareStatement("INSERT INTO `cube` (`sku`, `name`, `description`, `image`) VALUES(?, ?, ?, ?)");
+            pstm = con.prepareStatement("INSERT INTO `cube` (`sku`, `name`, `description`, `image`, `image2`) VALUES(?, ?, ?, ?, ?)");
             pstm.setString(1, cube.getSku());
             pstm.setString(2, cube.getName());
             pstm.setString(3, cube.getDescription());
             pstm.setString(4, cube.getImage());
+            pstm.setString(5, cube.getImage2());
             pstm.execute();
         } catch (SQLException e) {
             logger.error("Error en el método postCube.");
@@ -83,7 +86,7 @@ public class CubeDAO {
     public void updateCube(Cube cube, String sku) {
         try {
             con = MySQLConnection.getConnection();
-            pstm = con.prepareStatement("UPDATE `cube` SET `sku` = ?, name = ?, `description` = ?, `image` = ? WHERE `sku` = ?");
+            pstm = con.prepareStatement("UPDATE `cube` SET `sku` = ?, `name` = ?, `description` = ?, `image` = ?, `image2` = ? WHERE `sku` = ?");
         } catch (SQLException e) {
             logger.error("Error en el método updateCube.");
         } finally {

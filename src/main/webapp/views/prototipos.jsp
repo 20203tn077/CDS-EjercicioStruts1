@@ -18,7 +18,7 @@
   <s:param name="actualPage">prototipos</s:param>
 </s:include>
 
-<div class="container mt-5">
+<div class="container my-4 my-md-5">
   <div class="row">
     <div class="col">
       <div class="card shadow-sm">
