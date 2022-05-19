@@ -8,6 +8,9 @@ public class Cube {
     private String image;
     private String image2;
 
+    public Cube() {
+    }
+
     public Cube(int id, String sku, String name, String description, String image, String image2) {
         this.id = id;
         this.sku = sku;

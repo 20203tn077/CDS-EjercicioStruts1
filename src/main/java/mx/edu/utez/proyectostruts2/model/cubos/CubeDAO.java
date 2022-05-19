@@ -66,7 +66,8 @@ public class CubeDAO {
         return cube;
     }
 
-    public void postCube(Cube cube) {
+    public boolean postCube(Cube cube) {
+        boolean success = false;
         try {
             con = MySQLConnection.getConnection();
             pstm = con.prepareStatement("INSERT INTO `cube` (`sku`, `name`, `description`, `image`, `image2`) VALUES(?, ?, ?, ?, ?)");
@@ -76,14 +77,17 @@ public class CubeDAO {
             pstm.setString(4, cube.getImage());
             pstm.setString(5, cube.getImage2());
             pstm.execute();
+            success = true;
         } catch (SQLException e) {
             logger.error("Error en el método postCube.");
         } finally {
             MySQLConnection.closeConnection(con, pstm);
         }
+        return success;
     }
 
-    public void updateCube(Cube cube, String sku) {
+    public boolean updateCube(Cube cube, String sku) {
+        boolean success = false;
         try {
             con = MySQLConnection.getConnection();
             pstm = con.prepareStatement("UPDATE `cube` SET `sku` = ?, `name` = ?, `description` = ?, `image` = ?, `image2` = ? WHERE `sku` = ?");
@@ -92,9 +96,11 @@ public class CubeDAO {
         } finally {
             MySQLConnection.closeConnection(con, pstm);
         }
+        return success;
     }
 
-    public void deleteCube(String sku) {
+    public boolean deleteCube(String sku) {
+        boolean success = false;
         try {
             con = MySQLConnection.getConnection();
             pstm = con.prepareStatement("DELETE FROM `cube` WHERE `sku` = ?");
@@ -103,5 +109,6 @@ public class CubeDAO {
         } finally {
             MySQLConnection.closeConnection(con, pstm);
         }
+        return success;
     }
 }

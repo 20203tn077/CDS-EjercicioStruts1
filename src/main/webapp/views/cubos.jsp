@@ -69,14 +69,14 @@
             </div>
         </div>
     </div>
-    <button ng-click="mostrarRegistro()" class="btn btn-primary p-0" style="width: 50px; height: 50px; border-radius: 25px; position: fixed; bottom: 40px; right: 40px;">
+    <button ng-click="showCubeRegister()" class="btn btn-primary p-0" style="width: 50px; height: 50px; border-radius: 25px; position: fixed; bottom: 40px; right: 40px;">
         <div class="position-relative h-100 w-100">
             <i class="align-middle position-absolute top-50 start-50 translate-middle" style="width: 30px; height: 30px" data-feather="plus"></i>
         </div>
     </button>
-    <s:include value="/components/cubos/modalRegistro.jsp"></s:include>
-    <s:include value="/components/cubos/modalModificacion.jsp"></s:include>
-    <s:include value="/components/cubos/modalEliminacion.jsp"></s:include>
+    <s:include value="/components/cubos/modalRegister.jsp"></s:include>
+    <s:include value="/components/cubos/modalUpdate.jsp"></s:include>
+    <s:include value="/components/cubos/modalDelete.jsp"></s:include>
     <s:include value="/components/loader.jsp"></s:include>
     <s:include value="/components/alert.jsp"></s:include>
 </div>
@@ -84,38 +84,108 @@
 <script src="<%=context%>/assets/js/bootstrap.js"></script>
 <script>feather.replace()</script>
 <script>
-    const modalRegistro = new bootstrap.Modal('#modalRegistro', {})
-    const modalModificacion = new bootstrap.Modal('#modalModificacion', {})
-    const modalEliminacion = new bootstrap.Modal('#modalEliminacion', {})
-    const loader = new bootstrap.Modal('#loader', {backdrop: 'static', keyboard: false})
+    const modalRegisterElement = document.getElementById('modalRegister')
+    const modalUpdateElement = document.getElementById('modalUpdate')
+    const modalDeleteElement = document.getElementById('modalDelete')
+    const modalRegister = new bootstrap.Modal(modalRegisterElement, {})
+    const modalUpdate = new bootstrap.Modal(modalUpdateElement, {})
+    const modalDelete = new bootstrap.Modal(modalDeleteElement, {})
+    loaderElement = document.getElementById('loader')
+    const loader = new bootstrap.Modal(loaderElement, {backdrop: 'static', keyboard: false})
     const myAlert = new bootstrap.Toast('#alert', {delay: 3500})
 
     const cubes = JSON.parse('${cubes}')
+    const baseURL = '<%=context%>/cubeapi/'
     const app = angular.module('cubeStore', [])
 
-    app.controller('cubeController', ($scope, $sce) => {
-        $scope.vali
+    app.controller('cubeController', ($scope, $sce, $http, $timeout) => {
+        $scope.error = {}
+        $scope.validate = (form, input, values) => {
+            if ($scope.error[input]) return $scope.error[input]
+            if ($scope[form][input].$pristine && !$scope[form].$submitted) return ''
+            const error = $scope[form][input].$error
+            if (error.required) return 'Campo obligatorio.'
+            if (error.number) return 'Ingresa un número valido.'
+            if (error.datetimelocal) return 'Ingresa una fecha y hora válidas.'
+            if (error.time) return 'Ingresa una hora válida.'
+            if (error.date) return 'Ingresa una fecha válida.'
+            if (error.week) return 'Ingresa una semana válida.'
+            if (error.month) return 'Ingresa un mes válido.'
+            if (error.max) return values.type && values.type === 'fecha' ? ('Ingresa una fecha que no sea posterior a ' + values.max + '.') : ('Ingresa un valor dentro del rango' + values.min && values.max ? (' (' + values.min + ' - ' + values.max + ')') : '' + '.')
+            if (error.min) return values.type && values.type === 'fecha' ? ('Ingresa una fecha que no sea inferior a ' + values.min + '.') : ('Ingresa un valor dentro del rango' + values.min && values.max ? (' (' + values.min + ' - ' + values.max + ')') : '' + '.')
+            if (error.maxLength) return values.max ? 'Máximo ' + values.max + ' carácteres.' : 'Has excedido el máximo de carácteres.'
+            if (error.minLength) return values.max ? 'Mínimo ' + values.max + ' carácteres.' : 'No cumples con el mínimo de carácteres.'
+            if (error.email) return 'Ingresa un correo válido.'
+            if (error.pattern) return values.type ? ('Ingresa un' + values.gender || '' + ' ' + values.type + ' válid' + values.gender || '' + '.') : 'Ingresa un valor con el formato correcto.'
+            if (error.url) return 'Ingresa una URL válida.'
+            return ''
+        }
 
         $scope.cubes = cubes
 
-        $scope.alertType = 'success'
-        $scope.alertMessage = 'Ocurrió un  lkj lj lj ljklas hkahskjahskdjh as pouasfdoiusdof usoiduf oisuadofi psoid fproblema'
-        $scope.alertIcon = $sce.trustAsHtml(feather.icons['check-circle'].toSvg() + '&nbsp;')
-        myAlert.show()
-
-        $scope.mostrarRegistro = () => {
+        $scope.showCubeRegister = () => {
             $scope.infoModal = {}
-            modalRegistro.show()
+            $scope.formCubeRegister.$setPristine()
+            modalRegister.show()
         }
 
-        $scope.mostrarModificacion = (index) => {
+        $scope.showCubeUpdate = (index) => {
             $scope.infoModal = {...cubes[index]}
+            $scope.formModificacion.$setPristine()
             modalModificacion.show()
         }
 
-        $scope.mostrarEliminacion = (index) => {
+        $scope.showCubeDelete = (index) => {
             $scope.infoModal = {...cubes[index]}
+            $scope.formEliminacion.$setPristine()
             modalEliminacion.show()
+        }
+
+        $scope.registerCube = async () => {
+            if ($scope.formCubeRegister.$valid) {
+                await new Promise(resolve => {
+                    let finished = false
+                    modalRegisterElement.addEventListener('hidden.bs.modal', () => {
+                        if (finished) resolve()
+                        else finished = true
+                    })
+                    loaderElement.addEventListener('shown.bs.modal', () => {
+                        if (finished) resolve()
+                        else finished = true
+                    })
+                    modalRegister.hide()
+                    loader.show()
+                })
+                $http({
+                    method: 'POST',
+                    url: baseURL + 'registerCube',
+                    data: {
+                        cube: $scope.infoModal
+                    }
+                }).then(({data: res}) => {
+                    if (!res.error) {
+                        $scope.cubes.push({...$scope.infoModal})
+                    }
+
+                    loader.hide()
+                    if (res.error) modalRegister.show()
+
+                    $scope.alertType = res.error ? 'danger' : 'success'
+                    $scope.alertMessage = res.status
+                    $scope.alertIcon = $sce.trustAsHtml(feather.icons[res.error ? 'alert-triangle' : 'check-circle'].toSvg() + '&nbsp;')
+                    $timeout(() => {
+                        myAlert.show()
+                    })
+                }, () => {
+                    loader.hide()
+                    $scope.alertType = 'danger'
+                    $scope.alertMessage = 'No se pudo establecer conexión con el servidor.'
+                    $scope.alertIcon = $sce.trustAsHtml(feather.icons['alert-triangle'].toSvg() + '&nbsp;')
+                    $timeout(() => {
+                        myAlert.show()
+                    })
+                });
+            }
         }
     })
 </script>

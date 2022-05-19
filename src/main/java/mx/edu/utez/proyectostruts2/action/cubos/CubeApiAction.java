@@ -14,6 +14,11 @@ public class CubeApiAction extends ActionSupport {
     private Message message;
 
     public String executeCubeRegister() {
+        if (new CubeDAO().postCube(cube)) {
+            message = new Message(false, "Cubo registrado.");
+        } else {
+            message = new Message(true, "Error al registrar el cubo.");
+        }
         return SUCCESS;
     }
 
