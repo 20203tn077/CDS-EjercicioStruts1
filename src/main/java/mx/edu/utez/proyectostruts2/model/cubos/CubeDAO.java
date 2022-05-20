@@ -94,7 +94,7 @@ public class CubeDAO {
         } catch (SQLException e) {
             logger.error("Error en el método updateCube.");
         } finally {
-            MySQLConnection.closeConnection(con, pstm);
+            MySQLConnection.closeConnection(con, pstm, rs);
         }
         return success;
     }
@@ -104,8 +104,12 @@ public class CubeDAO {
         try {
             con = MySQLConnection.getConnection();
             pstm = con.prepareStatement("DELETE FROM `cube` WHERE `sku` = ?");
+            pstm.setString(1, sku);
+            pstm.execute();
+            success = true;
         } catch (SQLException e) {
             logger.error("Error en el método deleteCube.");
+            e.printStackTrace();
         } finally {
             MySQLConnection.closeConnection(con, pstm);
         }

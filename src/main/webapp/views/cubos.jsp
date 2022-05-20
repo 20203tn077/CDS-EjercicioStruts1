@@ -49,8 +49,8 @@
                                         <h5 class="m-0 align">{{cube.sku}} {{cube.name}}</h5>
                                     </div>
                                     <div class="col-auto ms-auto">
-                                        <i ng-click="mostrarModificacion($index)" role="button" data-feather="edit"></i>
-                                        <i ng-click="mostrarEliminacion($index)" role="button" data-feather="trash-2"></i>
+                                        <i ng-click="showCubeUpdate(cube.sku)" role="button" data-feather="edit"></i>
+                                        <i ng-click="showCubeDelete(cube.sku)" role="button" data-feather="trash-2"></i>
                                     </div>
                                 </div>
                             </div>
@@ -129,16 +129,15 @@
             modalRegister.show()
         }
 
-        $scope.showCubeUpdate = (index) => {
-            $scope.infoModal = {...cubes[index]}
-            $scope.formModificacion.$setPristine()
-            modalModificacion.show()
+        $scope.showCubeUpdate = (sku) => {
+            $scope.infoModal = {...cubes.find(cube => cube.sku === sku)}
+            $scope.formCubeUpdate.$setPristine()
+            modalUpdate.show()
         }
 
-        $scope.showCubeDelete = (index) => {
-            $scope.infoModal = {...cubes[index]}
-            $scope.formEliminacion.$setPristine()
-            modalEliminacion.show()
+        $scope.showCubeDelete = (sku) => {
+            $scope.infoModal = {...cubes.find(cube => cube.sku === sku)}
+            modalDelete.show()
         }
 
         $scope.registerCube = async () => {
@@ -169,6 +168,100 @@
 
                     loader.hide()
                     if (res.error) modalRegister.show()
+
+                    $scope.alertType = res.error ? 'danger' : 'success'
+                    $scope.alertMessage = res.status
+                    $scope.alertIcon = $sce.trustAsHtml(feather.icons[res.error ? 'alert-triangle' : 'check-circle'].toSvg() + '&nbsp;')
+                    $timeout(() => {
+                        myAlert.show()
+                    })
+                }, () => {
+                    loader.hide()
+                    $scope.alertType = 'danger'
+                    $scope.alertMessage = 'No se pudo establecer conexión con el servidor.'
+                    $scope.alertIcon = $sce.trustAsHtml(feather.icons['alert-triangle'].toSvg() + '&nbsp;')
+                    $timeout(() => {
+                        myAlert.show()
+                    })
+                });
+            }
+        }
+
+        $scope.updateCube = async () => {
+            if ($scope.formCubeRegister.$valid) {
+                await new Promise(resolve => {
+                    let finished = false
+                    modalRegisterElement.addEventListener('hidden.bs.modal', () => {
+                        if (finished) resolve()
+                        else finished = true
+                    })
+                    loaderElement.addEventListener('shown.bs.modal', () => {
+                        if (finished) resolve()
+                        else finished = true
+                    })
+                    modalRegister.hide()
+                    loader.show()
+                })
+                $http({
+                    method: 'POST',
+                    url: baseURL + 'registerCube',
+                    data: {
+                        cube: $scope.infoModal
+                    }
+                }).then(({data: res}) => {
+                    if (!res.error) {
+                        $scope.cubes.push({...$scope.infoModal})
+                    }
+
+                    loader.hide()
+                    if (res.error) modalRegister.show()
+
+                    $scope.alertType = res.error ? 'danger' : 'success'
+                    $scope.alertMessage = res.status
+                    $scope.alertIcon = $sce.trustAsHtml(feather.icons[res.error ? 'alert-triangle' : 'check-circle'].toSvg() + '&nbsp;')
+                    $timeout(() => {
+                        myAlert.show()
+                    })
+                }, () => {
+                    loader.hide()
+                    $scope.alertType = 'danger'
+                    $scope.alertMessage = 'No se pudo establecer conexión con el servidor.'
+                    $scope.alertIcon = $sce.trustAsHtml(feather.icons['alert-triangle'].toSvg() + '&nbsp;')
+                    $timeout(() => {
+                        myAlert.show()
+                    })
+                });
+            }
+        }
+
+        $scope.deleteCube = async () => {
+            if ($scope.formCubeRegister.$valid) {
+                await new Promise(resolve => {
+                    let finished = false
+                    modalDeleteElement.addEventListener('hidden.bs.modal', () => {
+                        if (finished) resolve()
+                        else finished = true
+                    })
+                    loaderElement.addEventListener('shown.bs.modal', () => {
+                        if (finished) resolve()
+                        else finished = true
+                    })
+                    modalDelete.hide()
+                    loader.show()
+                })
+                $http({
+                    method: 'POST',
+                    url: baseURL + 'deleteCube',
+                    data: {
+                        sku: $scope.infoModal.sku
+                    }
+                }).then(({data: res}) => {
+                    if (!res.error) {
+                        $scope.cubes = $scope.cubes.filter((cube) => cube.sku != $scope.infoModal.sku)
+                    }
+
+                    loader.hide()
+                    if (res.error) modalDelete.show()
 
                     $scope.alertType = res.error ? 'danger' : 'success'
                     $scope.alertMessage = res.status

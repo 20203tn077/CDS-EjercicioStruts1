@@ -25,8 +25,14 @@
         <div class="card-body">
           <h5 class="card-title">Prototipos</h5>
           <p class="card-text">En esta página se encuentran los prototipos</p>
-          <a class="btn btn-mauvelous" href="<s:url action="categorias" namespace="prototipos"/>">Categorías</a>
-          <a class="btn btn-mauvelous" href="<s:url action="productos" namespace="prototipos"/>">Productos</a>
+          <div class="row g-2">
+            <div class="col-auto">
+              <a class="btn btn-mauvelous" href="<s:url action="categorias" namespace="prototipos"/>">Categorías</a>
+            </div>
+            <div class="col-auto">
+              <a class="btn btn-mauvelous" href="<s:url action="productos" namespace="prototipos"/>">Productos</a>
+            </div>
+          </div>
         </div>
       </div>
     </div>

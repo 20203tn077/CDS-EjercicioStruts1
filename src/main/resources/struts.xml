@@ -54,6 +54,22 @@
                 <param name="root">message</param>
             </result>
         </action>
+        <action name="updateCube" class="mx.edu.utez.proyectostruts2.action.cubos.CubeApiAction" method="executeCubeUpdate">
+            <interceptor-ref name="json">
+                <param name="jsonContentType">application/json</param>
+            </interceptor-ref>
+            <result type="json">
+                <param name="root">message</param>
+            </result>
+        </action>
+        <action name="deleteCube" class="mx.edu.utez.proyectostruts2.action.cubos.CubeApiAction" method="executeCubeDelete">
+            <interceptor-ref name="json">
+                <param name="jsonContentType">application/json</param>
+            </interceptor-ref>
+            <result type="json">
+                <param name="root">message</param>
+            </result>
+        </action>
     </package>
 
 </struts>

@@ -5,6 +5,9 @@ import mx.edu.utez.proyectostruts2.model.cubos.Cube;
 import mx.edu.utez.proyectostruts2.model.cubos.CubeDAO;
 import mx.edu.utez.proyectostruts2.utils.Message;
 
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +30,11 @@ public class CubeApiAction extends ActionSupport {
     }
 
     public String executeCubeDelete() {
+        if (new CubeDAO().deleteCube(sku)) {
+            message = new Message(false, "Cubo eliminado.");
+        } else {
+            message = new Message(true, "Error al eliminar el cubo.");
+        }
         return SUCCESS;
     }
 

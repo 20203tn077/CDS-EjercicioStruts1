@@ -49,8 +49,14 @@
                                     <td>{{sabor.code}}</td>
                                     <td>{{sabor.name}}</td>
                                     <td>
-                                        <button class="btn btn-pale"  ng-click="mostrarModificacion($index)"><i data-feather="edit"></i></button>
-                                        <button class="btn btn-mauvelous" ng-click="mostrarEliminacion($index)"><i data-feather="trash-2"></i></button>
+                                        <div class="row g-2 justify-content-center">
+                                            <div class="col-auto">
+                                                <button class="btn btn-pale"  ng-click="mostrarModificacion($index)"><i data-feather="edit"></i></button>
+                                            </div>
+                                            <div class="col-auto">
+                                                <button class="btn btn-mauvelous" ng-click="mostrarEliminacion($index)"><i data-feather="trash-2"></i></button>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                                 </tbody>

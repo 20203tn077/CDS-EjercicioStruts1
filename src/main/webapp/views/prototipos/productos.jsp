@@ -55,7 +55,7 @@
                                     <td>{{pastel.price | currency}}</td>
                                     <td>{{pastel.amount}}</td>
                                     <td>
-                                        <div class="row g-2">
+                                        <div class="row g-2 justify-content-center">
                                             <div class="col-auto">
                                                 <button class="btn btn-pale"  ng-click="mostrarModificacion($index)"><i data-feather="edit"></i></button>
                                             </div>
