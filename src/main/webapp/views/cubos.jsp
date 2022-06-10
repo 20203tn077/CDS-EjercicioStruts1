@@ -102,7 +102,7 @@
         $scope.error = {}
         $scope.validate = (form, input, values) => {
             if ($scope.error[input]) return $scope.error[input]
-            if ($scope[form][input].$pristine && !$scope[form].$submitted) return ''
+            if ($scope[form][input].$untouched && !$scope[form].$submitted) return ''
             const error = $scope[form][input].$error
             if (error.required) return 'Campo obligatorio.'
             if (error.number) return 'Ingresa un número valido.'
@@ -116,7 +116,7 @@
             if (error.maxLength) return values.max ? 'Máximo ' + values.max + ' carácteres.' : 'Has excedido el máximo de carácteres.'
             if (error.minLength) return values.max ? 'Mínimo ' + values.max + ' carácteres.' : 'No cumples con el mínimo de carácteres.'
             if (error.email) return 'Ingresa un correo válido.'
-            if (error.pattern) return values.type ? ('Ingresa un' + values.gender || '' + ' ' + values.type + ' válid' + values.gender || '' + '.') : 'Ingresa un valor con el formato correcto.'
+            if (error.pattern) return values.type ? ('Ingresa un' + values.type || '' + ' ' + values.type + ' válid' + values.gender || '' + '.') : 'Ingresa un valor con el formato correcto.'
             if (error.url) return 'Ingresa una URL válida.'
             return ''
         }
@@ -279,6 +279,10 @@
                     })
                 });
             }
+        }
+
+        $scope.saveImage = (event) => {
+            console.log(event.target)
         }
     })
 </script>

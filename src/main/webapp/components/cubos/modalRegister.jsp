@@ -26,13 +26,13 @@
                         </div>
                         <div class="col-12 col-md-6">
                             <label class="form-label">Imagen: <b>*</b></label>
-                            <input autocomplete="false" required name="image" type="url" class="form-control" ng-model="infoModal.image">
+                            <input ng-change="saveImage($event)" ng-model="asd" required name="image" type="file" accept="image/*" class="form-control" upload>
                             <span class="invalid-feedback">{{validate('formCubeRegister', 'image')}}</span>
                             <img ng-src="{{infoModal.image}}" class="img-thumbnail w-100 mt-3" ng-class="{'d-none': !infoModal.image || formCubeRegister.image.$error.url}" style="height: 150px; object-fit: cover">
                         </div>
                         <div class="col-12 col-md-6">
                             <label class="form-label">Segunda imagen: <b>*</b></label>
-                            <input autocomplete="false" required name="image2" type="url" class="form-control" ng-model="infoModal.image2">
+                            <input required name="image2" type="file" accept="image/*" class="form-control" ng-model="infoModal.image2">
                             <span class="invalid-feedback">{{validate('formCubeRegister', 'image2')}}</span>
                             <img ng-src="{{infoModal.image2}}" class="img-thumbnail w-100 mt-3" ng-class="{'d-none': !infoModal.image2 || formCubeRegister.image2.$error.url}" style="height: 150px; object-fit: cover">
                         </div>
